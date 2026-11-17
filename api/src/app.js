@@ -5,7 +5,9 @@ function createApp({ repository }) {
   app.use(express.json());
 
   app.get('/api/tasks', async (req, res) => {
-    res.json(await repository.list());
+    const sortedTasks = await repository.list();
+    sortedTasks.sort((a, b) => Number(a.done) - Number(b.done));
+    res.json(sortedTasks);
   });
 
   return app;
